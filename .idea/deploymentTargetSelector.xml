@@ -6,6 +6,18 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
+      <SelectionState runConfigName="addTaskItem()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="addTaskItem() (1)">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="getAllItems()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

@@ -1,4 +1,4 @@
-package com.example.androidtestlab.local
+package com.example.androidtestlab.data.local
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -6,9 +6,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.androidtestlab.data.local.TaskDao
 import com.example.androidtestlab.data.local.TaskDatabase
 import com.example.androidtestlab.data.local.TaskEntity
-import com.example.androidtestlab.model.TaskItem
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +39,19 @@ class TaskDaoTest {
     }
 
     @Test
-    fun `insertTaskItem() should insert a task item into the database`()=runTest {
+    fun addTaskItem()=runTest {
         dao.insertTask(TaskEntity(1,"complete training"))
+        var result = dao.getAllTasks().first()
+        Assert.assertEquals(1,result.size)
+    }
+    @Test
+    fun getAllItems() = runTest{
+        dao.insertTask(TaskEntity(1,"complete training"))
+        dao.insertTask(TaskEntity(2,"Prepare for interview"))
+        dao.insertTask(TaskEntity(title = "Prepare for dsa")) // checking without passing id since its auto generated one
+        val result = dao.getAllTasks().first()
+
+
+        Assert.assertEquals(3,result.size)
     }
 }
