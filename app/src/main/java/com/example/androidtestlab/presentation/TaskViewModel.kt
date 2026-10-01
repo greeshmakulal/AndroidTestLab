@@ -2,7 +2,9 @@ package com.example.androidtestlab.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.copy
 import com.example.androidtestlab.data.repository.TaskRepository
+import com.example.androidtestlab.model.TaskItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,5 +44,13 @@ class TaskViewModel(private val repository: TaskRepository): ViewModel()
             repository.deleteTask(taskId)
         }
     }
-
+    fun toggleTask(task: TaskItem) {
+        viewModelScope.launch {
+            repository.updateTask(
+                task.copy(
+                    isCompleted = !task.isCompleted
+                )
+            )
+        }
+    }
 }

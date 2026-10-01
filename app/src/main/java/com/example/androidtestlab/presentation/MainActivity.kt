@@ -9,22 +9,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androidtestlab.data.local.TaskDatabase
+import com.example.androidtestlab.data.repository.TaskRepositoryImpl
 import com.example.androidtestlab.ui.theme.AndroidTestLabTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        val database = TaskDatabase.getDataBase(this)
+
+        val repository = TaskRepositoryImpl(
+            taskDao = database.getTaskDao()
+        )
+        val viewModel = TaskViewModel(repository)
+//        enableEdgeToEdge()
         setContent {
             AndroidTestLabTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                val uiState by viewModel.uiState.collectAsState()
+
+                TaskScreen(
+                    uiState = uiState,
+                    onAddTask = viewModel::addTask,
+                    onToggleTask = viewModel::toggleTask,
+                    onDeleteTask = viewModel::deleteTask
+                )
             }
         }
     }

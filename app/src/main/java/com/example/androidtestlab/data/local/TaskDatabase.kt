@@ -8,10 +8,11 @@ import androidx.room.RoomDatabase
 abstract class TaskDatabase: RoomDatabase() {
 
     abstract fun getTaskDao():TaskDao
+
     companion object{
         @Volatile
         private var INSTANCE: TaskDatabase? = null
-        fun getDataBase(context: Context): RoomDatabase {
+        fun getDataBase(context: Context): TaskDatabase {
             return INSTANCE ?: synchronized(this) { Room.databaseBuilder(
                 context,
                 TaskDatabase::class.java,
